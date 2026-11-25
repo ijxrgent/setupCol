@@ -44,3 +44,15 @@ variable "budget_limit_usd" {
   type        = string
   default     = "5"
 }
+
+variable "github_owner_id" {
+  description = "ID numérico del dueño del repo (sub: dueño@ID). Vacío = formato clásico"
+  type        = string
+  default     = ""
+}
+
+variable "github_repo_id" {
+  description = "ID numérico del repo (sub: repo@ID). Vacío = formato clásico"
+  type        = string
+  default     = ""
+}
