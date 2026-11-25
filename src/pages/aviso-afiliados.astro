@@ -1,0 +1,18 @@
+---
+import Base from '../layouts/Base.astro';
+import { SITE } from '../config';
+---
+<Base title="Cómo ganamos dinero" description={`Aviso de afiliados de ${SITE.name}.`}>
+  <div class="prose-article mx-auto max-w-3xl">
+    <h1 class="text-3xl font-extrabold text-slate-900">Cómo ganamos dinero</h1>
+    <p>
+      {SITE.name} participa en programas de afiliados de tiendas como Mercado Libre y Temu. Cuando haces clic en
+      uno de nuestros enlaces y compras, la tienda nos paga una pequeña comisión. El precio para ti es el mismo.
+    </p>
+    <p>
+      Las comisiones no deciden qué recomendamos: elegimos los productos por su relación calidad/precio,
+      sus opiniones y su utilidad real para estudiar o trabajar desde casa.
+    </p>
+    <p>Los precios mostrados son aproximados y pueden cambiar en cualquier momento.</p>
+  </div>
+</Base>

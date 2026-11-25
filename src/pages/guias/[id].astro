@@ -1,0 +1,49 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import ProductCard from '../../components/ProductCard.astro';
+import { CATEGORIES } from '../../config';
+
+export async function getStaticPaths() {
+  const articulos = await getCollection('articulos', ({ data }) => !data.borrador);
+  return articulos.map((a) => ({ params: { id: a.id }, props: { articulo: a } }));
+}
+
+const { articulo } = Astro.props;
+const { Content } = await render(articulo);
+const d = articulo.data;
+const fmt = (f: Date) => f.toLocaleDateString('es-CO', { year: 'numeric', month: 'long', day: 'numeric' });
+---
+<Base title={d.titulo} description={d.descripcion}>
+  <article class="mx-auto max-w-3xl">
+    <a href={`/categoria/${d.categoria}/`} class="text-sm font-semibold text-brand-600">{CATEGORIES[d.categoria]}</a>
+    <h1 class="mt-2 text-3xl font-extrabold leading-tight text-slate-900 sm:text-4xl">{d.titulo}</h1>
+    <p class="mt-2 text-sm text-slate-500">
+      Actualizado el {fmt(d.actualizado ?? d.publicado)}
+    </p>
+    <p class="mt-4 rounded-xl bg-amber-50 px-4 py-3 text-sm text-amber-900">
+      Este artículo tiene enlaces de afiliado. Si compras por ellos recibimos una comisión, sin costo extra para ti.
+    </p>
+
+    {d.productos.length > 0 && (
+      <nav class="mt-6 rounded-xl border border-slate-200 bg-white p-4 text-sm">
+        <p class="mb-2 font-semibold text-slate-900">Resumen rápido</p>
+        <ol class="list-decimal space-y-1 pl-5">
+          {d.productos.map((p, i) => (
+            <li><a href={`#producto-${i + 1}`} class="text-brand-600 hover:underline">{p.nombre}</a>{p.etiqueta && ` — ${p.etiqueta}`}</li>
+          ))}
+        </ol>
+      </nav>
+    )}
+
+    <div class="prose-article mt-6">
+      <Content />
+    </div>
+
+    {d.productos.length > 0 && (
+      <section class="mt-8 space-y-5">
+        {d.productos.map((p, i) => <ProductCard posicion={i + 1} producto={p} />)}
+      </section>
+    )}
+  </article>
+</Base>

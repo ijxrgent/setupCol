@@ -1,0 +1,65 @@
+---
+interface Props {
+  posicion: number;
+  producto: {
+    nombre: string;
+    etiqueta?: string;
+    precioAprox?: string;
+    imagen?: string;
+    resumen: string;
+    pros: string[];
+    contras: string[];
+    linkMercadoLibre?: string;
+    linkTemu?: string;
+  };
+}
+const { posicion, producto: p } = Astro.props;
+// rel="sponsored" es lo que Google pide para enlaces de afiliado
+const rel = 'sponsored nofollow noopener';
+---
+<article id={`producto-${posicion}`} class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+  <div class="flex flex-col gap-5 sm:flex-row">
+    {p.imagen && (
+      <img src={p.imagen} alt={p.nombre} loading="lazy" class="h-40 w-full rounded-xl object-contain sm:w-40" />
+    )}
+    <div class="flex-1">
+      <div class="flex flex-wrap items-center gap-2">
+        <span class="text-sm font-bold text-slate-400">#{posicion}</span>
+        {p.etiqueta && (
+          <span class="rounded-full bg-accent-500/15 px-2.5 py-0.5 text-xs font-semibold text-amber-800">{p.etiqueta}</span>
+        )}
+      </div>
+      <h3 class="mt-1 text-lg font-bold text-slate-900">{p.nombre}</h3>
+      {p.precioAprox && <p class="text-sm text-slate-500">Precio aproximado: {p.precioAprox}</p>}
+      <p class="mt-2 text-slate-700">{p.resumen}</p>
+
+      <div class="mt-4 grid gap-4 text-sm sm:grid-cols-2">
+        {p.pros.length > 0 && (
+          <ul class="space-y-1">
+            {p.pros.map((x) => <li class="flex gap-2"><span class="text-emerald-600">✓</span>{x}</li>)}
+          </ul>
+        )}
+        {p.contras.length > 0 && (
+          <ul class="space-y-1">
+            {p.contras.map((x) => <li class="flex gap-2"><span class="text-rose-500">✗</span>{x}</li>)}
+          </ul>
+        )}
+      </div>
+
+      <div class="mt-5 flex flex-wrap gap-3">
+        {p.linkMercadoLibre && (
+          <a href={p.linkMercadoLibre} target="_blank" rel={rel}
+             class="rounded-lg bg-yellow-300 px-4 py-2 text-sm font-semibold text-slate-900 hover:bg-yellow-400">
+            Ver en Mercado Libre
+          </a>
+        )}
+        {p.linkTemu && (
+          <a href={p.linkTemu} target="_blank" rel={rel}
+             class="rounded-lg bg-orange-500 px-4 py-2 text-sm font-semibold text-white hover:bg-orange-600">
+            Ver en Temu
+          </a>
+        )}
+      </div>
+    </div>
+  </div>
+</article>

@@ -1,0 +1,23 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import ArticleCard from '../../components/ArticleCard.astro';
+import { CATEGORIES, type CategoryKey } from '../../config';
+
+export function getStaticPaths() {
+  return Object.keys(CATEGORIES).map((cat) => ({ params: { cat } }));
+}
+
+const cat = Astro.params.cat as CategoryKey;
+const articulos = await getCollection('articulos', ({ data }) => !data.borrador && data.categoria === cat);
+---
+<Base title={CATEGORIES[cat]} description={`Guías y comparativas de ${CATEGORIES[cat].toLowerCase()} para estudiantes y home office.`}>
+  <h1 class="text-3xl font-extrabold text-slate-900">{CATEGORIES[cat]}</h1>
+  {articulos.length === 0 ? (
+    <p class="mt-4 text-slate-600">Pronto publicaremos guías en esta categoría.</p>
+  ) : (
+    <div class="mt-6 grid gap-4 sm:grid-cols-2">
+      {articulos.map((a) => <ArticleCard id={a.id} {...a.data} />)}
+    </div>
+  )}
+</Base>

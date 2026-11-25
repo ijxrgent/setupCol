@@ -1,0 +1,37 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import ArticleCard from '../components/ArticleCard.astro';
+import { SITE } from '../config';
+
+const articulos = (await getCollection('articulos', ({ data }) => !data.borrador))
+  .sort((a, b) => b.data.publicado.valueOf() - a.data.publicado.valueOf());
+const destacados = articulos.filter((a) => a.data.destacado);
+---
+<Base>
+  <section class="rounded-3xl bg-gradient-to-br from-brand-600 to-brand-700 px-6 py-12 text-white sm:px-10">
+    <h1 class="max-w-2xl text-3xl font-extrabold leading-tight sm:text-4xl">
+      Arma un setup cómodo para estudiar o trabajar, sin gastar de más
+    </h1>
+    <p class="mt-3 max-w-xl text-brand-100">{SITE.description}</p>
+    <a href="/categoria/guias/" class="mt-6 inline-block rounded-xl bg-white px-5 py-3 font-semibold text-brand-700 hover:bg-brand-50">
+      Ver setups por presupuesto
+    </a>
+  </section>
+
+  {destacados.length > 0 && (
+    <section class="mt-10">
+      <h2 class="mb-4 text-xl font-bold text-slate-900">Destacados</h2>
+      <div class="grid gap-4 sm:grid-cols-2">
+        {destacados.map((a) => <ArticleCard id={a.id} {...a.data} />)}
+      </div>
+    </section>
+  )}
+
+  <section class="mt-10">
+    <h2 class="mb-4 text-xl font-bold text-slate-900">Últimas guías</h2>
+    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {articulos.map((a) => <ArticleCard id={a.id} {...a.data} />)}
+    </div>
+  </section>
+</Base>

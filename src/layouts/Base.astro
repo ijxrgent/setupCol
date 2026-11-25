@@ -1,0 +1,64 @@
+---
+import '../styles/global.css';
+import { SITE, CATEGORIES } from '../config';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+const { title, description = SITE.description } = Astro.props;
+const fullTitle = title ? `${title} | ${SITE.name}` : `${SITE.name} — ${SITE.tagline}`;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const year = new Date().getFullYear();
+---
+<!doctype html>
+<html lang={SITE.lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+  </head>
+  <body class="min-h-screen bg-slate-50 font-sans text-slate-800 antialiased">
+    <header class="border-b border-slate-200 bg-white">
+      <div class="mx-auto flex max-w-5xl items-center justify-between gap-4 px-4 py-4">
+        <a href="/" class="text-xl font-extrabold tracking-tight text-slate-900">
+          Setup<span class="text-brand-600">Col</span>
+        </a>
+        <nav class="flex gap-4 text-sm font-medium text-slate-600">
+          <a href="/categoria/guias/" class="hover:text-brand-600">Setups</a>
+          <a href="/ofertas/" class="hover:text-brand-600">Ofertas</a>
+          <a href="/aviso-afiliados/" class="hidden hover:text-brand-600 sm:inline">Cómo ganamos dinero</a>
+        </nav>
+      </div>
+      <div class="mx-auto flex max-w-5xl gap-2 overflow-x-auto px-4 pb-3 text-sm">
+        {Object.entries(CATEGORIES).filter(([k]) => k !== 'guias').map(([key, label]) => (
+          <a href={`/categoria/${key}/`} class="shrink-0 rounded-full bg-slate-100 px-3 py-1 text-slate-700 hover:bg-brand-50 hover:text-brand-700">
+            {label}
+          </a>
+        ))}
+      </div>
+    </header>
+
+    <main class="mx-auto max-w-5xl px-4 py-8">
+      <slot />
+    </main>
+
+    <footer class="mt-16 border-t border-slate-200 bg-white">
+      <div class="mx-auto max-w-5xl px-4 py-8 text-sm text-slate-500">
+        <p>
+          Algunos enlaces son de afiliado: si compras a través de ellos podemos recibir una comisión,
+          sin costo extra para ti. <a href="/aviso-afiliados/" class="underline">Más información</a>.
+        </p>
+        <p class="mt-2">© {year} {SITE.name}</p>
+      </div>
+    </footer>
+  </body>
+</html>

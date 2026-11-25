@@ -1,0 +1,23 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --color-brand-50: #eef6ff;
+  --color-brand-100: #d9eaff;
+  --color-brand-600: #1f5fd6;
+  --color-brand-700: #1a4fb0;
+  --color-accent-500: #ffb020;
+}
+
+/* Estilos para el contenido Markdown de los artículos */
+.prose-article h2 { @apply mt-10 mb-3 text-2xl font-bold text-slate-900; }
+.prose-article h3 { @apply mt-6 mb-2 text-xl font-semibold text-slate-900; }
+.prose-article p { @apply my-4 leading-7 text-slate-700; }
+.prose-article ul { @apply my-4 list-disc pl-6 text-slate-700; }
+.prose-article ol { @apply my-4 list-decimal pl-6 text-slate-700; }
+.prose-article li { @apply my-1; }
+.prose-article a { @apply font-medium text-brand-600 underline underline-offset-2; }
+.prose-article strong { @apply text-slate-900; }
+.prose-article table { @apply my-6 w-full text-left text-sm; }
+.prose-article th { @apply border-b border-slate-300 py-2 pr-4 font-semibold; }
+.prose-article td { @apply border-b border-slate-200 py-2 pr-4; }

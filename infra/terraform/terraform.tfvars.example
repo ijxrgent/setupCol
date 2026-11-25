@@ -1,0 +1,7 @@
+# Copia este archivo como terraform.tfvars y llena tus valores (terraform.tfvars no se sube a git)
+github_repo  = "tu-usuario/setupcol"
+budget_email = "tu-correo@ejemplo.com"
+
+# Fase 2 (cuando compres dominio):
+# domain_name    = "www.tudominio.com"
+# hosted_zone_id = "Z0123456789ABCDEFGHIJ"
